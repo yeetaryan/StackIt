@@ -27,7 +27,7 @@ export default function LandingPage() {
               <a className="text-sm font-medium text-[#141414]" href="#">GitHub</a>
               <a className="text-sm font-medium text-[#141414]" href="#">Contact</a>
             </div>
-            <button className="h-10 px-4 rounded-lg bg-black text-white text-sm font-bold">Get Started</button>
+            
             <button 
               onClick={handleGetStarted}
               className="h-10 px-4 rounded-lg bg-black text-white text-sm font-bold"
