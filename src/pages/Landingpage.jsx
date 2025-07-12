@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/app');
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col bg-neutral-50 overflow-x-hidden font-['Inter','Noto Sans',sans-serif]">
       <div className="flex h-full flex-col">
@@ -21,6 +28,12 @@ export default function LandingPage() {
               <a className="text-sm font-medium text-[#141414]" href="#">Contact</a>
             </div>
             <button className="h-10 px-4 rounded-lg bg-black text-white text-sm font-bold">Get Started</button>
+            <button 
+              onClick={handleGetStarted}
+              className="h-10 px-4 rounded-lg bg-black text-white text-sm font-bold"
+            >
+              Get Started
+            </button>
           </div>
         </header>
 
@@ -31,7 +44,12 @@ export default function LandingPage() {
             <p className="text-white text-base md:text-lg max-w-2xl mt-2">
               Join our community-driven Q&A platform for collaborative learning and structured knowledge sharing.
             </p>
-            <button className="mt-6 h-12 px-6 bg-black text-white rounded-lg font-bold text-base">Get Started</button>
+            <button 
+              onClick={handleGetStarted}
+              className="mt-6 h-12 px-6 bg-black text-white rounded-lg font-bold text-base"
+            >
+              Get Started
+            </button>
           </section>
 
           <section className="mt-20 w-full max-w-5xl text-left">

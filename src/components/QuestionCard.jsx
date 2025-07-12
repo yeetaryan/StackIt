@@ -1,0 +1,88 @@
+import React from 'react';
+import {
+  ArrowUpIcon,
+  ArrowDownIcon,
+  ChatBubbleLeftIcon,
+  EyeIcon,
+  CheckCircleIcon,
+} from '@heroicons/react/24/outline';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export default function QuestionCard({ question }) {
+  return (
+    <div className="border-b border-gray-200 bg-white px-6 py-4 hover:bg-gray-50 transition-colors">
+      <div className="flex gap-4">
+        {/* Vote and Stats Column */}
+        <div className="flex flex-col items-center gap-2 text-sm text-gray-500 min-w-[80px]">
+          <div className="flex flex-col items-center">
+            <span className="font-medium text-gray-900">{question.votes}</span>
+            <span className="text-xs">votes</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className={classNames(
+              question.hasAcceptedAnswer ? 'text-green-600 font-medium' : 'text-gray-900',
+              'font-medium'
+            )}>
+              {question.answers}
+            </span>
+            <span className="text-xs">answers</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="font-medium text-gray-900">{question.views}</span>
+            <span className="text-xs">views</span>
+          </div>
+        </div>
+
+        {/* Question Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="text-lg font-medium text-gray-900 hover:text-black">
+                <a href={`/app/questions/${question.id}`} className="hover:underline">
+                  {question.title}
+                  {question.hasAcceptedAnswer && (
+                    <CheckCircleIcon className="inline-block ml-2 h-5 w-5 text-green-500" />
+                  )}
+                </a>
+              </h3>
+              <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                {question.excerpt}
+              </p>
+            </div>
+          </div>
+
+          {/* Tags and Meta */}
+          <div className="mt-3 flex items-center justify-between">
+            <div className="flex flex-wrap gap-2">
+              {question.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200 cursor-pointer"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="flex items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-1">
+                <img
+                  className="h-4 w-4 rounded-full"
+                  src={question.author.avatar}
+                  alt=""
+                />
+                <span className="font-medium text-gray-700">{question.author.name}</span>
+                <span>{question.author.reputation} rep</span>
+              </div>
+              <time dateTime={question.createdAt}>
+                {new Date(question.createdAt).toLocaleDateString()}
+              </time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
