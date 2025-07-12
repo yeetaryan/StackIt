@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import {
@@ -27,16 +27,25 @@ export default function QuestionDetailPage() {
   const [question, setQuestion] = useState(null);
   const [answerBody, setAnswerBody] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const viewsIncrementedRef = useRef(null);
 
+  // Effect to load question data
   useEffect(() => {
     const foundQuestion = getQuestionById(id);
     if (foundQuestion) {
       setQuestion(foundQuestion);
-      incrementViews(id);
     } else {
       navigate('/app');
     }
-  }, [id, getQuestionById, incrementViews, navigate]);
+  }, [id, getQuestionById, navigate]);
+
+  // Effect to increment views only once per question
+  useEffect(() => {
+    if (question && viewsIncrementedRef.current !== id) {
+      incrementViews(id);
+      viewsIncrementedRef.current = id;
+    }
+  }, [id, question, incrementViews]);
 
   const handleVoteQuestion = (voteType) => {
     voteQuestion(id, voteType);

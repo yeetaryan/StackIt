@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const AppContext = createContext();
 
@@ -163,15 +163,15 @@ export const AppProvider = ({ children }) => {
     ));
   };
 
-  const incrementViews = (questionId) => {
+  const incrementViews = useCallback((questionId) => {
     setQuestions(prev => prev.map(q => 
       q.id === questionId 
         ? { ...q, views: q.views + 1 }
         : q
     ));
-  };
+  }, []);
 
-  const toggleSaveQuestion = (questionId) => {
+  const toggleSaveQuestion = useCallback((questionId) => {
     setSavedQuestions(prev => {
       const isAlreadySaved = prev.includes(questionId);
       if (isAlreadySaved) {
@@ -180,11 +180,11 @@ export const AppProvider = ({ children }) => {
         return [...prev, questionId];
       }
     });
-  };
+  }, []);
 
-  const getQuestionById = (id) => {
+  const getQuestionById = useCallback((id) => {
     return questions.find(q => q.id === id);
-  };
+  }, [questions]);
 
   const getQuestionsByTag = (tag) => {
     return questions.filter(q => q.tags.includes(tag));
