@@ -1,17 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   ArrowUpIcon,
   ArrowDownIcon,
   ChatBubbleLeftIcon,
   EyeIcon,
   CheckCircleIcon,
+  BookmarkIcon,
 } from '@heroicons/react/24/outline';
+import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid';
+import { useApp } from '../context/AppContext';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function QuestionCard({ question }) {
+  const { savedQuestions, toggleSaveQuestion } = useApp();
+  const isSaved = savedQuestions.includes(question.id);
+
   return (
     <div className="border-b border-gray-200 bg-white px-6 py-4 hover:bg-gray-50 transition-colors">
       <div className="flex gap-4">
@@ -26,7 +33,7 @@ export default function QuestionCard({ question }) {
               question.hasAcceptedAnswer ? 'text-green-600 font-medium' : 'text-gray-900',
               'font-medium'
             )}>
-              {question.answers}
+              {question.answers.length}
             </span>
             <span className="text-xs">answers</span>
           </div>
@@ -41,29 +48,40 @@ export default function QuestionCard({ question }) {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <h3 className="text-lg font-medium text-gray-900 hover:text-black">
-                <a href={`/app/questions/${question.id}`} className="hover:underline">
+                <Link to={`/question/${question.id}`} className="hover:underline">
                   {question.title}
                   {question.hasAcceptedAnswer && (
                     <CheckCircleIcon className="inline-block ml-2 h-5 w-5 text-green-500" />
                   )}
-                </a>
+                </Link>
               </h3>
               <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                {question.excerpt}
+                {question.body.substring(0, 150)}...
               </p>
             </div>
+            <button
+              onClick={() => toggleSaveQuestion(question.id)}
+              className="ml-4 p-1 text-gray-400 hover:text-gray-600"
+            >
+              {isSaved ? (
+                <BookmarkSolidIcon className="h-5 w-5 text-black" />
+              ) : (
+                <BookmarkIcon className="h-5 w-5" />
+              )}
+            </button>
           </div>
 
           {/* Tags and Meta */}
           <div className="mt-3 flex items-center justify-between">
             <div className="flex flex-wrap gap-2">
               {question.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
+                  to={`/tags/${tag}`}
                   className="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200 cursor-pointer"
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
             <div className="flex items-center gap-4 text-xs text-gray-500">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
   QuestionMarkCircleIcon, 
@@ -9,12 +10,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'Home', href: '/app', icon: HomeIcon, current: true },
-  { name: 'Ask Question', href: '/app/ask', icon: QuestionMarkCircleIcon, current: false },
-  { name: 'Tags', href: '/app/tags', icon: TagIcon, current: false },
-  { name: 'Profile', href: '/app/profile', icon: UserIcon, current: false },
-  { name: 'Saved', href: '/app/saved', icon: BookmarkIcon, current: false },
-  { name: 'Statistics', href: '/app/stats', icon: ChartBarIcon, current: false },
+  { name: 'Home', href: '/app', icon: HomeIcon },
+  { name: 'Ask Question', href: '/ask', icon: QuestionMarkCircleIcon },
+  { name: 'Tags', href: '/tags', icon: TagIcon },
+  { name: 'Profile', href: '/profile', icon: UserIcon },
+  { name: 'Saved', href: '/saved', icon: BookmarkIcon },
+  { name: 'Statistics', href: '/stats', icon: ChartBarIcon },
 ];
 
 function classNames(...classes) {
@@ -22,18 +23,20 @@ function classNames(...classes) {
 }
 
 export default function Sidebar() {
+  const location = useLocation();
+
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
         <div className="flex h-16 shrink-0 items-center">
-          <div className="flex items-center gap-3">
+          <Link to="/app" className="flex items-center gap-3">
             <div className="w-8 h-8">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor" />
               </svg>
             </div>
             <h2 className="text-xl font-bold text-gray-900">StackIt</h2>
-          </div>
+          </Link>
         </div>
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -41,10 +44,10 @@ export default function Sidebar() {
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className={classNames(
-                        item.current
+                        location.pathname === item.href
                           ? 'bg-gray-50 text-black'
                           : 'text-gray-700 hover:text-black hover:bg-gray-50',
                         'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium'
@@ -52,13 +55,13 @@ export default function Sidebar() {
                     >
                       <item.icon
                         className={classNames(
-                          item.current ? 'text-black' : 'text-gray-400 group-hover:text-black',
+                          location.pathname === item.href ? 'text-black' : 'text-gray-400 group-hover:text-black',
                           'h-6 w-6 shrink-0'
                         )}
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
