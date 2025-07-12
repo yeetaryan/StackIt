@@ -2,14 +2,13 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import {
-  BellIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { useApp } from '../context/AppContext';
-
+import NotificationDropdown from './NotificationDropdown';
 
 const userNavigation = [
   { name: 'Your Profile', href: '/profile' },
@@ -65,14 +64,8 @@ export default function Topbar({ setSidebarOpen }) {
             Ask Question
           </Link>
 
-          {/* Notifications */}
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-          >
-            <span className="sr-only">View notifications</span>
-            <BellIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
+          {/* Notifications - Replace with NotificationDropdown */}
+          <NotificationDropdown />
 
           {/* Separator */}
           <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />

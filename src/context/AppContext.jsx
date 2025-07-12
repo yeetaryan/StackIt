@@ -94,6 +94,32 @@ export const AppProvider = ({ children }) => {
   const [questions, setQuestions] = useState(initialQuestions);
   const [savedQuestions, setSavedQuestions] = useState([]);
   const [currentUser] = useState(mockUser);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 'n1',
+      type: 'answer',
+      message: 'Alice Johnson answered your question: "How to implement React Router?"',
+      questionId: 'q1',
+      timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // 5 minutes ago
+      read: false,
+    },
+    {
+      id: 'n2',
+      type: 'vote',
+      message: 'Tom Cook upvoted your answer on: "JavaScript async/await vs Promises"',
+      questionId: 'q2',
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+      read: false,
+    },
+    {
+      id: 'n3',
+      type: 'vote',
+      message: 'Sarah Wilson upvoted your question: "MySQL vs PostgreSQL: Which database to choose?"',
+      questionId: 'q3',
+      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+      read: true,
+    },
+  ]);
 
   // Load saved questions from localStorage on mount
   useEffect(() => {
@@ -138,6 +164,16 @@ export const AppProvider = ({ children }) => {
         ? { ...q, answers: [...q.answers, newAnswer] }
         : q
     ));
+
+    // Create notification for question author if someone else answered
+    const question = questions.find(q => q.id === questionId);
+    if (question && question.author.id !== currentUser.id) {
+      createNotification(
+        'answer',
+        `${currentUser.name} answered your question: "${question.title}"`,
+        questionId
+      );
+    }
   };
 
   const voteQuestion = (questionId, voteType) => {
@@ -146,6 +182,16 @@ export const AppProvider = ({ children }) => {
         ? { ...q, votes: q.votes + voteType }
         : q
     ));
+
+    // Create notification for question author if someone else voted
+    const question = questions.find(q => q.id === questionId);
+    if (question && question.author.id !== currentUser.id && voteType > 0) {
+      createNotification(
+        'vote',
+        `${currentUser.name} upvoted your question: "${question.title}"`,
+        questionId
+      );
+    }
   };
 
   const voteAnswer = (questionId, answerId, voteType) => {
@@ -161,6 +207,19 @@ export const AppProvider = ({ children }) => {
           }
         : q
     ));
+
+    // Create notification for answer author if someone else voted
+    const question = questions.find(q => q.id === questionId);
+    if (question) {
+      const answer = question.answers.find(a => a.id === answerId);
+      if (answer && answer.author.id !== currentUser.id && voteType > 0) {
+        createNotification(
+          'vote',
+          `${currentUser.name} upvoted your answer on: "${question.title}"`,
+          questionId
+        );
+      }
+    }
   };
 
   const incrementViews = useCallback((questionId) => {
@@ -237,10 +296,33 @@ export const AppProvider = ({ children }) => {
     };
   };
 
+  const createNotification = useCallback((type, message, questionId = null) => {
+    const notification = {
+      id: `n${Date.now()}`,
+      type,
+      message,
+      questionId,
+      timestamp: new Date().toISOString(),
+      read: false,
+    };
+    setNotifications(prev => [notification, ...prev]);
+  }, []);
+
+  const markNotificationAsRead = useCallback((notificationId) => {
+    setNotifications(prev => prev.map(n => 
+      n.id === notificationId ? { ...n, read: true } : n
+    ));
+  }, []);
+
+  const markAllNotificationsAsRead = useCallback(() => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  }, []);
+
   const value = {
     currentUser,
     questions,
     savedQuestions,
+    notifications,
     addQuestion,
     addAnswer,
     voteQuestion,
@@ -253,6 +335,9 @@ export const AppProvider = ({ children }) => {
     getUserAnswers,
     getAllTags,
     getStats,
+    createNotification,
+    markNotificationAsRead,
+    markAllNotificationsAsRead,
   };
 
   return (
