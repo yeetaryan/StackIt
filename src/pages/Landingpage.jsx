@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -22,8 +22,7 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-sm font-medium text-[#141414]" href="#">Home</a>
-              <a className="text-sm font-medium text-[#141414]" href="#">About</a>
+              <Link to="/app" className="text-sm font-medium text-[#141414] hover:text-gray-600 transition-colors">Home</Link>
               <a className="text-sm font-medium text-[#141414]" href="#">GitHub</a>
               <a className="text-sm font-medium text-[#141414]" href="#">Contact</a>
             </div>
@@ -87,8 +86,7 @@ export default function LandingPage() {
         <footer className="bg-neutral-100 py-10 mt-20">
           <div className="max-w-5xl mx-auto text-center">
             <div className="flex justify-center gap-6 mb-4">
-              <a href="#" className="text-neutral-500">Home</a>
-              <a href="#" className="text-neutral-500">About</a>
+              <Link to="/app" className="text-neutral-500 hover:text-neutral-700 transition-colors">Home</Link>
               <a href="#" className="text-neutral-500">GitHub</a>
               <a href="#" className="text-neutral-500">Contact</a>
             </div>
