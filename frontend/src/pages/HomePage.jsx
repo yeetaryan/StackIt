@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import QuestionCard from '../components/QuestionCard';
 import {
+<<<<<<< Updated upstream
   // FunnelIcon, // Remove unused icon
+=======
+  FunnelIcon,
+>>>>>>> Stashed changes
 } from '@heroicons/react/24/outline';
 
 const sortOptions = [
@@ -13,6 +17,7 @@ const sortOptions = [
 ];
 
 export default function HomePage() {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream:src/pages/HomePage.jsx
   const { questions, getAllTags } = useApp();
 =======
@@ -28,6 +33,12 @@ export default function HomePage() {
     : questions;
 
   const sortedQuestions = [...filteredQuestions].sort((a, b) => {
+=======
+  const { questions, loading, error } = useApp();
+  const [selectedSort, setSelectedSort] = useState('newest');
+
+  const sortedQuestions = [...questions].sort((a, b) => {
+>>>>>>> Stashed changes
     switch (selectedSort) {
       case 'votes':
         return (b.vote_count || 0) - (a.vote_count || 0);
@@ -47,6 +58,7 @@ export default function HomePage() {
   return (
     <>
       {/* Header */}
+<<<<<<< Updated upstream
       <div className="border-b border-gray-200 pb-5">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>
@@ -81,11 +93,32 @@ export default function HomePage() {
               {tag.name} <span className="ml-1 text-xs text-gray-400">({tag.count})</span>
             </button>
           ))}
+=======
+      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold leading-6 text-gray-900">All Questions</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            {questions.length} questions
+          </p>
+        </div>
+        <div className="mt-3 flex sm:ml-4 sm:mt-0">
+          <button
+            type="button"
+            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            <FunnelIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+            Filter
+          </button>
+>>>>>>> Stashed changes
         </div>
       </div>
 
       {/* Sort Options */}
+<<<<<<< Updated upstream
       <div className="mt-4 border-b border-gray-200">
+=======
+      <div className="mt-6 border-b border-gray-200">
+>>>>>>> Stashed changes
         <nav className="-mb-px flex space-x-8">
           {sortOptions.map((option) => (
             <button
