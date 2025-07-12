@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import RichTextEditor from '../components/RichTextEditor';
 import { 
   QuestionMarkCircleIcon, 
   DocumentTextIcon, 
@@ -18,15 +17,6 @@ export default function AskQuestionPage() {
     tags: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Utility function to check if HTML content is empty
-  const isHtmlEmpty = (html) => {
-    if (!html) return true;
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    const text = div.textContent || div.innerText || '';
-    return text.trim() === '';
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,13 +44,6 @@ export default function AskQuestionPage() {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleBodyChange = (content) => {
-    setFormData(prev => ({
-      ...prev,
-      body: content
     }));
   };
 
@@ -130,9 +113,14 @@ export default function AskQuestionPage() {
                   <p className="text-sm text-gray-500">Include all the information someone would need to answer your question</p>
                 </div>
               </div>
-              <RichTextEditor
+              <textarea
+                name="body"
+                id="body"
+                required
+                rows={8}
                 value={formData.body}
-                onChange={handleBodyChange}
+                onChange={handleChange}
+                className="w-full text-base px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-black focus:ring-0 transition-colors placeholder:text-gray-400 resize-none"
                 placeholder="Describe your problem in detail. Include what you've tried, what you expected to happen, and what actually happened. Code examples are helpful!"
               />
             </div>
@@ -173,7 +161,7 @@ export default function AskQuestionPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting || !formData.title || isHtmlEmpty(formData.body) || !formData.tags}
+                  disabled={isSubmitting || !formData.title || !formData.body || !formData.tags}
                   className="px-8 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black"
                 >
                   {isSubmitting ? (
