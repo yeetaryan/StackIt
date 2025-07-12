@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import {
@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function ProfilePage() {
-  const { currentUser, getUserQuestions, getUserAnswers } = useApp();
+  const { currentUser, questions } = useApp();
   
   if (!currentUser) {
     return (
@@ -20,8 +20,24 @@ export default function ProfilePage() {
     );
   }
 
-  const userQuestions = getUserQuestions(currentUser.id) || [];
-  const userAnswers = getUserAnswers(currentUser.id) || [];
+  // Filter questions by current user with flexible matching
+  const userQuestions = useMemo(() => {
+    return questions.filter(question => {
+      if (!question.author) return false;
+      
+      // Try multiple matching strategies
+      return (
+        question.author.id === currentUser.id ||
+        question.author.clerk_id === currentUser.id ||
+        question.author.display_name === currentUser.name ||
+        question.author.name === currentUser.name ||
+        question.author.email === currentUser.email
+      );
+    });
+  }, [questions, currentUser]);
+
+  // For now, we'll use an empty array for answers since we don't have answer data loaded
+  const userAnswers = [];
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -115,6 +131,12 @@ export default function ProfilePage() {
         ) : (
           <div className="text-center py-8 text-gray-500">
             <p>You haven't asked any questions yet.</p>
+            <Link 
+              to="/ask" 
+              className="mt-2 inline-block text-sm text-blue-600 hover:text-blue-500"
+            >
+              Ask your first question
+            </Link>
           </div>
         )}
       </div>
@@ -153,6 +175,12 @@ export default function ProfilePage() {
         ) : (
           <div className="text-center py-8 text-gray-500">
             <p>You haven't answered any questions yet.</p>
+            <Link 
+              to="/app" 
+              className="mt-2 inline-block text-sm text-blue-600 hover:text-blue-500"
+            >
+              Browse questions to answer
+            </Link>
           </div>
         )}
       </div>

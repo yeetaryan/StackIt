@@ -25,7 +25,6 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState({
     questions: false,
     tags: false,
-    stats: false,
     general: false,
     user: false,
   });
@@ -103,12 +102,16 @@ export const AppProvider = ({ children }) => {
     try {
       setLoading(prev => ({ ...prev, questions: true }));
       
+      console.log('📋 Question data being sent:', questionData);
+      
       // Transform the data to match backend schema
       const backendData = {
         title: questionData.title,
         content: questionData.body,        // body -> content
         tag_names: questionData.tags       // tags -> tag_names
       };
+      
+      console.log('📋 Backend data:', backendData);
       
       const newQuestion = await apiService.createQuestion(backendData);
       
@@ -117,8 +120,9 @@ export const AppProvider = ({ children }) => {
       return newQuestion.id;
     } catch (error) {
       console.error('Failed to create question:', error);
-      setError('Failed to create question. Please try again.');
-      throw error;
+      const errorMessage = error.message || 'Failed to create question. Please try again.';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(prev => ({ ...prev, questions: false }));
     }
@@ -326,21 +330,6 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const getStats = async () => {
-    try {
-      setLoading(prev => ({ ...prev, stats: true }));
-      const stats = await apiService.getStats();
-      setError(null);
-      return stats;
-    } catch (error) {
-      console.error('Failed to get stats:', error);
-      setError('Failed to load statistics. Please try again.');
-      return null;
-    } finally {
-      setLoading(prev => ({ ...prev, stats: false }));
-    }
-  };
-
   const searchQuestions = async (query) => {
     try {
       return await apiService.searchQuestions(query);
@@ -349,6 +338,16 @@ export const AppProvider = ({ children }) => {
       return [];
     }
   };
+
+  const getAllTags = useCallback(async () => {
+    try {
+      const tagsData = await apiService.getTags();
+      return tagsData;
+    } catch (error) {
+      console.error('Failed to get all tags:', error);
+      return [];
+    }
+  }, [apiService]);
 
   const value = {
     // State
@@ -376,9 +375,9 @@ export const AppProvider = ({ children }) => {
     getQuestionById,
     getUserQuestions,
     getUserAnswers,
-    getStats,
     searchQuestions,
     refreshData,
+    getAllTags,
   };
 
   return (

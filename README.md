@@ -2,6 +2,28 @@
 
 A modern Q&A forum platform built with React and FastAPI, featuring Clerk authentication, real-time voting, and comprehensive question management.
 
+## 📸 Screenshots
+
+### Landing Page
+![Landing Page](screenshots/landing-page.png)
+*Clean and modern landing page with gradient hero section and feature highlights*
+
+### Questions Dashboard(Home Page)
+![Questions Dashboard](screenshots/home.png)
+*Main dashboard showing all questions with tag filtering, sorting options, and community stats*
+
+### Ask Question
+![Ask Question](screenshots/ask-question.png)
+*Intuitive question creation form with rich text editor and tag management*
+
+### Tags Overview
+![Tags Page](screenshots/tags-page.png)
+*Comprehensive tags system showing all available tags with question counts*
+
+### Profile Overview
+![Profile Page](screenshots/profile.png)
+*Personalized user profile showing questions asked, reputation score, and activity summary with clean statistics display*
+
 ## 🚀 Features
 
 - **Authentication**: Secure user authentication with Clerk
@@ -74,7 +96,7 @@ touch .env
 Add the following to your `.env` file:
 ```env
 # Database
-DATABASE_URL=mysql+pymysql://root:NBLLoCdsFXdbJfwPwkdkUPIrnozOewMH@gondola.proxy.rlwy.net:25577/railway
+DATABASE_URL=" "
 
 # Clerk Authentication
 CLERK_SECRET_KEY=your_clerk_secret_key_here
@@ -169,81 +191,3 @@ Once the backend is running, you can access:
 ## 🗂️ Project Structure
 
 ```
-StackItLocal/
-├── frontend/                 # React frontend
-│   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   ├── context/        # React context providers
-│   │   └── App.jsx         # Main app component
-│   ├── public/             # Static assets
-│   └── package.json        # Frontend dependencies
-│
-├── backend/                 # FastAPI backend
-│   ├── app/
-│   │   ├── routers/        # API route handlers
-│   │   ├── services/       # Business logic
-│   │   ├── models/         # Database models
-│   │   ├── schemas/        # Pydantic schemas
-│   │   └── dependencies/   # Auth dependencies
-│   ├── run.py              # Server entry point
-│   └── requirements.txt    # Backend dependencies
-│
-└── README.md               # This file
-```
-
-## 🔒 Environment Variables
-
-### Backend (.env)
-```env
-DATABASE_URL=mysql+pymysql://user:password@host:port/database
-CLERK_SECRET_KEY=sk_test_...
-CLERK_PUBLISHABLE_KEY=pk_test_...
-```
-
-### Frontend (.env.local)
-```env
-VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
-```
-
-## 🛠️ Development
-
-### Available Scripts
-
-#### Frontend
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
-```
-
-#### Backend
-```bash
-python run.py        # Start development server
-```
-
-### Database
-
-The application uses a Railway MySQL database. The connection is pre-configured, but you can:
-
-1. **View Database**: Access Railway dashboard to view data
-2. **Run Migrations**: Use the provided migration scripts
-3. **Seed Data**: Sample data is already available
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-1. **Port Already in Use**
-   ```bash
-   # Kill process on port 8000 (backend)
-   lsof -ti:8000 | xargs kill -9
-   
-   # Kill process on port 5173 (frontend)
-   lsof -ti:5173 | xargs kill -9
-   ```
-
-2. **Clerk Authentication Issues**
-   - Verify your API 

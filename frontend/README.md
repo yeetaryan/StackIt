@@ -82,7 +82,7 @@ Create a `.env` file in the backend directory:
 
 **For Railway MySQL:**
 ```env
-DATABASE_URL=mysql+pymysql://root:your_password@host:port/railway
+DATABASE_URL=
 ```
 
 **For Local MySQL:**

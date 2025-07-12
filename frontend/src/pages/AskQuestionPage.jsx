@@ -31,11 +31,14 @@ export default function AskQuestionPage() {
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
       };
 
+      console.log('📋 Submitting question:', questionData);
+
       const questionId = await addQuestion(questionData);
       navigate(`/question/${questionId}`);
     } catch (error) {
       console.error('Error creating question:', error);
-      alert('Failed to create question. Please try again.');
+      const errorMessage = error.message || 'Failed to create question. Please try again.';
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

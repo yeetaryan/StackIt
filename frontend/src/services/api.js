@@ -29,7 +29,7 @@ class ApiService {
     // Add authorization header if token is available
     if (this.getToken) {
       try {
-        // Get the session token from Clerk (without template)
+        // Get the session token from Clerk
         const token = await this.getToken();
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;
@@ -51,14 +51,35 @@ class ApiService {
 
     try {
       console.log(`🚀 Making ${options.method || 'GET'} request to:`, url);
-      console.log('📋 Headers:', headers);
+      console.log('📋 Request data:', options.body);
       
       const response = await fetch(url, config);
       
       if (!response.ok) {
         console.error(`❌ HTTP ${response.status} error for ${endpoint}`);
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        
+        // Try to get detailed error information
+        let errorData;
+        try {
+          errorData = await response.json();
+          console.error('📋 Error details:', errorData);
+        } catch (e) {
+          errorData = { detail: `HTTP error! status: ${response.status}` };
+        }
+        
+        // Create a more detailed error message
+        let errorMessage = errorData.detail || `HTTP error! status: ${response.status}`;
+        
+        // If it's a validation error (422), show validation details
+        if (response.status === 422 && errorData.detail) {
+          if (Array.isArray(errorData.detail)) {
+            errorMessage = errorData.detail.map(err => `${err.loc?.join('.')}: ${err.msg}`).join(', ');
+          } else {
+            errorMessage = errorData.detail;
+          }
+        }
+        
+        throw new Error(errorMessage);
       }
       
       const data = await response.json();

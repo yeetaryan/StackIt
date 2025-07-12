@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.config import engine
 from app.models.models import Base
-from app.routers import users, questions, answers, votes, tags, search, stats, debug
+from app.routers import users, questions, answers, votes, tags, search, stats
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -23,15 +23,20 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000", 
         "http://127.0.0.1:3000",
-        "http://localhost:5173",  # Vite default port
+        "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "http://localhost:4173",  # Vite preview port
+        "http://localhost:4173",
         "http://127.0.0.1:4173"
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "StackIt API is running"}
 
 # Include routers
 app.include_router(users.router)
@@ -40,11 +45,4 @@ app.include_router(answers.router)
 app.include_router(votes.router)
 app.include_router(tags.router)
 app.include_router(search.router)
-app.include_router(stats.router)
-app.include_router(debug.router)  # Add debug router
-
-# Health check endpoint
-@app.get("/health")
-def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy", "message": "StackIt API is running"} 
+app.include_router(stats.router) 

@@ -13,7 +13,6 @@ import TagsPage from './pages/TagsPage';
 import TagDetailPage from './pages/TagDetailPage';
 import ProfilePage from './pages/ProfilePage';
 import SavedPage from './pages/SavedPage';
-import StatsPage from './pages/StatsPage';
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -60,14 +59,6 @@ function App() {
               <Layout>
                 <GuestRoute>
                   <TagDetailPage />
-                </GuestRoute>
-              </Layout>
-            } />
-            
-            <Route path="/stats" element={
-              <Layout>
-                <GuestRoute>
-                  <StatsPage />
                 </GuestRoute>
               </Layout>
             } />
