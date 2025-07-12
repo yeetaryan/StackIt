@@ -23,8 +23,8 @@ export default function LandingPage() {
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
               <Link to="/app" className="text-sm font-medium text-[#141414] hover:text-gray-600 transition-colors">Home</Link>
-              <a className="text-sm font-medium text-[#141414]" href="#">GitHub</a>
-              <a className="text-sm font-medium text-[#141414]" href="#">Contact</a>
+             <a className="text-sm font-medium text-[#141414]" href="https://github.com/yeetaryan/StackIt" target="_blank"rel="noopener noreferrer">GitHub</a>
+              <a  className="text-sm font-medium text-[#141414]" href="#contact">Contact</a>
             </div>
             
             <button 
@@ -83,21 +83,35 @@ export default function LandingPage() {
           </section>
         </main>
 
-        <footer className="bg-neutral-100 py-10 mt-20">
-          <div className="max-w-5xl mx-auto text-center">
-            <div className="flex justify-center gap-6 mb-4">
-              <Link to="/app" className="text-neutral-500 hover:text-neutral-700 transition-colors">Home</Link>
-              <a href="#" className="text-neutral-500">GitHub</a>
-              <a href="#" className="text-neutral-500">Contact</a>
-            </div>
-            <div className="flex justify-center gap-4 text-neutral-500">
-              <a href="#" aria-label="GitHub"><span>🐙</span></a>
-              <a href="#" aria-label="LinkedIn"><span>💼</span></a>
-              <a href="#" aria-label="Twitter"><span>🐦</span></a>
-            </div>
-            <p className="text-neutral-500 mt-4">© 2025 StackIt</p>
-          </div>
-        </footer>
+        <footer id="contact" className="bg-neutral-100 py-10 mt-20">
+  <div className="max-w-5xl mx-auto text-center">
+    <div className="flex justify-center gap-6 mb-4">
+      <Link to="/app" className="text-neutral-500 hover:text-neutral-700 transition-colors">Home</Link>
+      <a href="https://github.com/yeetaryan/StackIt" className="text-neutral-500 hover:text-neutral-700 transition-colors">GitHub</a>
+      <a href="#" className="text-neutral-500 hover:text-neutral-700 transition-colors">Contact</a>
+    </div>
+    
+    {/* Contact Information */}
+    <div className="flex justify-center gap-6 mb-4 text-neutral-500">
+      <div className="flex items-center gap-2">
+        <span>📞</span>
+        <span>+91 9354339808</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span>✉️</span>
+        <span>contact@stackit.com</span>
+      </div>
+    </div>
+    
+    <div className="flex justify-center gap-4 text-neutral-500 mb-4">
+      <a href="#" aria-label="GitHub"><span>🐙</span></a>
+      <a href="#" aria-label="LinkedIn"><span>💼</span></a>
+      <a href="#" aria-label="Twitter"><span>🐦</span></a>
+    </div>
+    <p className="text-neutral-500">© 2025 StackIt</p>
+  </div>
+</footer>
+
       </div>
     </div>
   );
