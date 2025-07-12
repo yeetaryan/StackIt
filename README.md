@@ -1,296 +1,249 @@
-# StackIt Backend API
+# StackIt - Q&A Forum Platform
 
-A FastAPI-based backend for the StackIt Q&A Forum Platform.
+A modern Q&A forum platform built with React and FastAPI, featuring Clerk authentication, real-time voting, and comprehensive question management.
 
 ## 🚀 Features
 
-- **Complete Q&A System**: Questions, answers, voting, and user management
-- **Tag System**: Categorize questions with tags and filter by tags
-- **Search Functionality**: Full-text search across questions and answers
-- **User Reputation**: Vote-based reputation system
-- **RESTful API**: Clean, documented API endpoints with organized routers
-- **Database**: MySQL with proper relationships and indexing (Railway MySQL support)
-- **Validation**: Comprehensive input validation using Pydantic v2
-- **Documentation**: Auto-generated API docs with Swagger UI
-- **Modular Architecture**: Organized router structure for maintainability
+- **Authentication**: Secure user authentication with Clerk
+- **Question Management**: Create, edit, delete, and vote on questions
+- **Answer System**: Comprehensive answer system with voting and acceptance
+- **Tag System**: Organize questions with tags
+- **Real-time Updates**: Live voting and interaction updates
+- **User Profiles**: Complete user profile management
+- **Search & Filter**: Advanced search and filtering capabilities
+- **Responsive Design**: Mobile-first responsive design with Tailwind CSS
 
-## 🏗️ Architecture
+## 🛠️ Tech Stack
 
-```
-backend/
-├── app/
-│   ├── database/
-│   │   └── config.py          # Database configuration
-│   ├── models/
-│   │   └── models.py          # SQLAlchemy models
-│   ├── schemas/
-│   │   └── schemas.py         # Pydantic schemas
-│   ├── services/
-│   │   ├── user_service.py    # User business logic
-│   │   ├── question_service.py # Question business logic
-│   │   ├── answer_service.py  # Answer business logic
-│   │   ├── vote_service.py    # Voting business logic
-│   │   └── tag_service.py     # Tag business logic
-│   ├── routers/
-│   │   ├── __init__.py        # Router package
-│   │   ├── users.py           # User endpoints
-│   │   ├── questions.py       # Question endpoints
-│   │   ├── answers.py         # Answer endpoints
-│   │   ├── votes.py           # Vote endpoints
-│   │   ├── tags.py            # Tag endpoints
-│   │   ├── search.py          # Search endpoints
-│   │   └── stats.py           # Statistics endpoints
-│   └── main.py                # FastAPI application
-├── requirements.txt           # Python dependencies
-├── setup_database.py         # Database setup script
-├── run.py                    # Server run script
-└── README.md                 # This file
-```
+### Frontend
+- **React 19** - UI framework
+- **Vite 7** - Build tool and dev server
+- **Tailwind CSS 4** - Styling
+- **React Router 7** - Client-side routing
+- **Clerk** - Authentication
+- **Heroicons** - Icons
+
+### Backend
+- **FastAPI** - Python web framework
+- **SQLAlchemy** - ORM
+- **MySQL** - Database (Railway hosted)
+- **Clerk** - Authentication integration
+- **Pydantic** - Data validation
+- **Uvicorn** - ASGI server
 
 ## 📋 Prerequisites
 
-- Python 3.8+
-- MySQL 8.0+ (Railway MySQL or local MySQL)
-- pip (Python package manager)
+Before running the application, ensure you have:
 
-## 🔧 Setup Instructions
+- **Node.js** (v18 or higher)
+- **Python** (v3.8 or higher)
+- **pip** (Python package manager)
+- **Clerk Account** (for authentication)
 
-### 1. Install Dependencies
+## 🔧 Installation & Setup
+
+### 1. Clone the Repository
 
 ```bash
+git clone <your-repo-url>
+cd StackIt
+```
+
+### 2. Backend Setup
+
+```bash
+# Navigate to backend directory
 cd backend
+
+# Create virtual environment (recommended)
+python -m venv myenv
+
+# Activate virtual environment
+# On macOS/Linux:
+source myenv/bin/activate
+# On Windows:
+myenv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Create environment file
+touch .env
 ```
 
-### 2. Database Setup
-
-**Option A: Railway MySQL (Recommended for development)**
-1. Sign up at [Railway](https://railway.app)
-2. Create a new MySQL database
-3. Get your connection string from Railway dashboard
-
-**Option B: Local MySQL**
-Make sure MySQL is running and create a database:
-
-```sql
-CREATE DATABASE stackit_db;
-```
-
-### 3. Environment Configuration
-
-Create a `.env` file in the backend directory:
-
-**For Railway MySQL:**
+Add the following to your `.env` file:
 ```env
-DATABASE_URL=mysql+pymysql://root:your_password@host:port/railway
+# Database
+DATABASE_URL=mysql+pymysql://root:NBLLoCdsFXdbJfwPwkdkUPIrnozOewMH@gondola.proxy.rlwy.net:25577/railway
+
+# Clerk Authentication
+CLERK_SECRET_KEY=your_clerk_secret_key_here
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
 ```
 
-**For Local MySQL:**
-```env
-DATABASE_URL=mysql+pymysql://root:password@localhost:3306/stackit_db
-```
-
-### 4. Initialize Database
-
-Run the setup script to create tables and sample data:
+### 3. Frontend Setup
 
 ```bash
-python setup_database.py
+# Navigate to frontend directory (from root)
+cd frontend
+
+# Install dependencies
+npm install
+
+# Create environment file
+touch .env.local
 ```
 
-### 5. Start the Server
+Add the following to your `.env.local` file:
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
+```
+
+### 4. Clerk Configuration
+
+1. **Create Clerk Account**: Go to [clerk.com](https://clerk.com) and create an account
+2. **Create Application**: Set up a new application in Clerk dashboard
+3. **Configure Sign-in Methods**: Enable email, Google, GitHub, or other providers
+4. **Get API Keys**: 
+   - Copy the **Publishable Key** (starts with `pk_test_...`)
+   - Copy the **Secret Key** (starts with `sk_test_...`)
+5. **Update Environment Files**: Add the keys to your `.env` and `.env.local` files
+
+## 🚀 Running the Application
+
+### Start Backend Server
 
 ```bash
+# From backend directory
+cd backend
+
+# Activate virtual environment if not already active
+source myenv/bin/activate  # macOS/Linux
+# or
+myenv\Scripts\activate     # Windows
+
+# Start the server
 python run.py
 ```
 
-Or using uvicorn directly:
+The backend will be available at: `http://localhost:8000`
+
+### Start Frontend Development Server
 
 ```bash
-uvicorn app.main:app --reload
+# From frontend directory (new terminal)
+cd frontend
+
+# Start the development server
+npm run dev
 ```
 
-## 📡 API Endpoints
+The frontend will be available at: `http://localhost:5173`
 
-### Authentication
-- `POST /api/users/` - Create a new user
-- `GET /api/users/{user_id}` - Get user by ID
-- `PUT /api/users/{user_id}` - Update user
-- `GET /api/users/` - List all users
+## 🔗 API Documentation
 
-### Questions
-- `POST /api/questions/` - Create a question
-- `GET /api/questions/{question_id}` - Get question with answers
-- `PUT /api/questions/{question_id}` - Update question
-- `DELETE /api/questions/{question_id}` - Delete question
-- `GET /api/questions/` - List questions with search/filter
-- `GET /api/questions/user/{user_id}` - Get user's questions
-- `POST /api/questions/{question_id}/solve` - Mark as solved
+Once the backend is running, you can access:
 
-### Answers
-- `POST /api/answers/` - Create an answer
-- `GET /api/answers/{answer_id}` - Get answer by ID
-- `PUT /api/answers/{answer_id}` - Update answer
-- `DELETE /api/answers/{answer_id}` - Delete answer
-- `GET /api/answers/question/{question_id}` - Get question's answers
-- `GET /api/answers/user/{user_id}` - Get user's answers
-- `POST /api/answers/{answer_id}/accept` - Accept answer
+- **Interactive API Docs**: `http://localhost:8000/docs`
+- **Alternative API Docs**: `http://localhost:8000/redoc`
+- **Health Check**: `http://localhost:8000/health`
 
-### Voting
-- `POST /api/votes/` - Vote on question/answer
-- `GET /api/votes/question/{question_id}` - Get question votes
-- `GET /api/votes/answer/{answer_id}` - Get answer votes
+## 📱 Application Flow
 
-### Tags
-- `GET /api/tags/` - List all tags
-- `GET /api/tags/popular` - Get popular tags
-- `GET /api/tags/search` - Search tags
-- `GET /api/tags/{tag_name}/questions` - Get questions by tag
+### For New Users
 
-### Search
-- `GET /api/search/questions` - Search questions
+1. **Landing Page**: Visit `http://localhost:5173`
+2. **Sign Up**: Click "Get Started" to create an account
+3. **Browse Questions**: View questions as a guest
+4. **Ask Questions**: Sign in to ask questions
+5. **Vote & Answer**: Participate in the community
 
-### Statistics
-- `GET /api/stats/` - Get platform statistics
+### For Authenticated Users
 
-## 🔍 API Documentation
+1. **Dashboard**: Access full features at `http://localhost:5173/app`
+2. **Ask Questions**: Create new questions with tags
+3. **Vote**: Upvote/downvote questions and answers
+4. **Answer**: Provide answers to questions
+5. **Profile**: Manage your profile and view your activity
 
-Once the server is running, visit:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+## 🗂️ Project Structure
 
-## 🎯 Key Features for Frontend Integration
-
-### 1. Question Listing (Home Page)
-```http
-GET /api/questions/?page=1&limit=10&sort_by=created_at&sort_order=desc
+```
+StackItLocal/
+├── frontend/                 # React frontend
+│   ├── src/
+│   │   ├── components/      # Reusable UI components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   ├── context/        # React context providers
+│   │   └── App.jsx         # Main app component
+│   ├── public/             # Static assets
+│   └── package.json        # Frontend dependencies
+│
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── routers/        # API route handlers
+│   │   ├── services/       # Business logic
+│   │   ├── models/         # Database models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   └── dependencies/   # Auth dependencies
+│   ├── run.py              # Server entry point
+│   └── requirements.txt    # Backend dependencies
+│
+└── README.md               # This file
 ```
 
-### 2. Question Search
-```http
-GET /api/questions/?query=javascript&tags=javascript,react
+## 🔒 Environment Variables
+
+### Backend (.env)
+```env
+DATABASE_URL=mysql+pymysql://user:password@host:port/database
+CLERK_SECRET_KEY=sk_test_...
+CLERK_PUBLISHABLE_KEY=pk_test_...
 ```
 
-### 3. Tag Filtering (Sidebar)
-```http
-GET /api/tags/popular?limit=20
-GET /api/tags/{tag_name}/questions
+### Frontend (.env.local)
+```env
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
 ```
 
-### 4. Create Question
-```http
-POST /api/questions/
-Content-Type: application/json
+## 🛠️ Development
 
-{
-  "title": "How to handle async operations?",
-  "content": "I need help with JavaScript async...",
-  "tag_names": ["javascript", "async", "promises"]
-}
+### Available Scripts
+
+#### Frontend
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
 ```
 
-### 5. Vote on Content
-```http
-POST /api/votes/
-Content-Type: application/json
-
-{
-  "question_id": "question-uuid",
-  "vote_type": 1  // 1 for upvote, -1 for downvote
-}
+#### Backend
+```bash
+python run.py        # Start development server
 ```
 
-## 🗄️ Database Schema
+### Database
 
-### Users
-- `id` (Primary Key)
-- `email`, `username`, `display_name`
-- `reputation` (calculated from votes)
-- `bio`, `avatar_url`
+The application uses a Railway MySQL database. The connection is pre-configured, but you can:
 
-### Questions
-- `id` (Primary Key)
-- `user_id` (Foreign Key)
-- `title`, `content`
-- `views`, `vote_count`, `answer_count`
-- `is_solved` (boolean)
-- `created_at`, `updated_at`
+1. **View Database**: Access Railway dashboard to view data
+2. **Run Migrations**: Use the provided migration scripts
+3. **Seed Data**: Sample data is already available
 
-### Answers
-- `id` (Primary Key)
-- `question_id`, `user_id` (Foreign Keys)
-- `content`, `vote_count`
-- `is_accepted` (boolean)
-- `created_at`, `updated_at`
+## 🚨 Troubleshooting
 
-### Votes
-- `id` (Primary Key)
-- `user_id` (Foreign Key)
-- `question_id` OR `answer_id` (Foreign Key)
-- `vote_type` (1 for upvote, -1 for downvote)
+### Common Issues
 
-### Tags
-- `id` (Primary Key)
-- `name`, `description`, `color`
-- `usage_count` (auto-updated)
+1. **Port Already in Use**
+   ```bash
+   # Kill process on port 8000 (backend)
+   lsof -ti:8000 | xargs kill -9
+   
+   # Kill process on port 5173 (frontend)
+   lsof -ti:5173 | xargs kill -9
+   ```
 
-## 🔒 Security Features
-
-- Input validation with Pydantic v2
-- SQL injection prevention with SQLAlchemy ORM
-- CORS configuration for frontend integration
-- User ownership checks for CRUD operations
-- Vote validation (can't vote on own content)
-- Organized router structure for better security management
-
-## 📊 Sample Data
-
-The setup script creates:
-- 3 sample users (John Doe, Jane Smith, Bob Wilson)
-- 11 sample tags (javascript, python, react, mysql, etc.)
-- 5 sample questions (including React optimization, MySQL vs PostgreSQL, etc.)
-- 2 sample answers
-
-## 🚀 Production Considerations
-
-For production deployment:
-1. Use environment variables for sensitive data (already implemented)
-2. Set up proper CORS origins for your frontend domain
-3. Add rate limiting and authentication (Auth0 integration planned)
-4. Use a production ASGI server (e.g., Gunicorn with Uvicorn workers)
-5. Set up database connection pooling
-6. Add logging and monitoring
-7. Consider using Railway or similar cloud database for production
-
-## 🤝 API Usage Examples
-
-### Get Questions for Home Page
-```python
-import requests
-
-response = requests.get('http://localhost:8000/api/questions/')
-questions = response.json()
-```
-
-### Create a Question
-```python
-import requests
-
-question_data = {
-    "title": "How to use React hooks?",
-    "content": "I'm learning React hooks and need help...",
-    "tag_names": ["react", "javascript", "hooks"]
-}
-
-response = requests.post('http://localhost:8000/api/questions/', json=question_data)
-```
-
-### Search Questions
-```python
-import requests
-
-response = requests.get('http://localhost:8000/api/questions/?query=javascript&tags=react')
-results = response.json()
-```
-
-This backend provides everything needed for your StackIt Q&A platform frontend! 🎉 
+2. **Clerk Authentication Issues**
+   - Verify your API 
